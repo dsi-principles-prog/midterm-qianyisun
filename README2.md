@@ -1,0 +1,7 @@
+### Principles of Programming Midterm project
+
+## 1.Outlines the problem you have identified and states data source data (in README2.md)
+
+## Dataset Source information
+The dataset is from https://www.kaggle.com/ramamet4/app-store-apple-data-set-10k-apps and it includes more than 7000 Apple iOS mobile application details.
+Dimensions of the data set are 7197 rows and 16 columns.
