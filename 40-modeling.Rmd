@@ -42,7 +42,7 @@ Now I use 'assert' to check the new feature varaibles I added to ensure that the
 ```
 
 
-# Hint:Because the cont_rating_degree will only contain three values including "Low","Middle","High". Thus we need to test whether the cont_rating_degree column contain the three values.
+# Hint:Because the cont_rating_degree will only contain three values including "Low","Middle","High". Thus we need to test whether the cont_rating_degree column contains only the three values.
 ```{r test cont_rating_degree function}
 
 ```
