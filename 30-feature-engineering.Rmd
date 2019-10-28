@@ -7,19 +7,25 @@ output: html_notebook
 
 
 ## 4.1 Feature engineering: Size in MB
-It is uncommon that we decribe the size of application by using bytes as a unit. Because the application size will have many digits when we use bytes as a unit, which might cause some problems for our further process. Another shortcoming is that we cannot have a more clear view on the relation between bytes size of the application and user rating.Thus, I think MB a better predictor than bytes.This is because, to some extent, the conversion can avoid the problems I just mentioned.
+It is uncommon that we describe the size of application by using bytes as a unit. Another shortcoming is that we cannot have a more clear view on the relation between bytes size of the application and user rating.Thus, I think MB a better predictor than bytes.This is because, to some extent, the conversion can avoid the problems I just mentioned.
 
 So I want to add the new feature function called size_MB. The new feature function is transformed from the size_bytes column. We all know the 1MB=1024KB and 1KB = 1024 Byte. Thus 1MB is equal to '1024*1024 bytes'. Now please help me create this function.
 
+input: df(data frame), size_bytes(var), size_MB(col_name)
+
+output: create a new column on original dataset and the new column name is called size_MB
+
+# Hint: we can refer to the two functions I left which might help you better create the function.
 ```{r size_MB}
+size_MB<-function(df,var,col_name){
 
+  
+
+}
 
 ```
 
-Because each value of size_MB should be always more than 0. Thus when we want to test size_MB function, we need to test whether all values of size_MB column are always more than 0.
-```{r test size_MB function}
 
-```
 
 
 ## 4.2 Feature engineering: evaluate the rank of Content Rating
@@ -28,54 +34,61 @@ Clearly, there is a non-monotonous relation between content rating and user rati
 
 Therefore you can create a new feature function called cont_rating_degree to show what we want. When the content rating is the range between 0 and 6, then we can define it as "low" level content rating. The value is higher than six but its value is smaller than or equal to 12, then we define it as "middle" level content rating. Finally, for the value that is higher than 12, I defined it as "high" level content rating.
 
+input: df(data frame), cont_rating(var), cont_rating_degree(col_name)
+
+output: create a new column on original dataset and the new column name is called cont_rating_degree
+
+# Hint: we can refer to the two functions I left which might help you better create the function.
 ```{r cont_rating_degree function}
+cont_rating_degree<-function(df,var,col_name){
 
+  
 
-```
-
-Because the cont_rating_degree will only contain three values including "low","middle","high". Thus we need to test whether the cont_rating_degree column contain the three values.
-```{r test cont_rating_degree function}
-
-```
-
-
-## 4.3 Feature engineering: average User Rating counts of supporting devices
-In order to explore the relationship between user ratings and average User Rating counts of supporting devices, now I create a feature function called avg_rating_count_ver.This new column of value is equel to the value that rating_count_ver divides sup_devices_num(Number of supporting devices).
-```{r avg_rating_count_ver function}
-avg_rating_count_ver<-function(df){
-
-df %>% 
-    mutate(avg_rating_count_ver = rating_count_ver/sup_devices_num)
 }
 
 ```
 
-```{r test avg_rating_count_ver function}
-df %>% 
-  avg_rating_count_ver() %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),avg_rating_count_ver)
 
+
+## 4.3 Feature engineering: average User Rating counts of supporting devices
+In order to explore the relationship between user ratings and average User Rating counts of supporting devices, now I create a feature function called avg_rating_count_ver.This new column of value is equel to the value that rating_count_ver divided by sup_devices_num(Number of supporting devices).
+
+input: df(data frame), rating_count_ver(var1), sup_devices_num(var2),avg_rating_count_ver(col_name)
+
+output: create a new column on original dataset and the new column name is called avg_rating_count_ver
+
+```{r avg_rating_count_ver function}
+avg_rating_count_ver<-function(df,var1,var2,col_name){
+
+df<-df %>% 
+    mutate(avg_rating_count_ver = {{var1}}/{{var2}}) %>% 
+    select(avg_rating_count_ver,everything()) 
+    names(df)[1]<-paste0(col_name) #we can use this line code to change the name of the new column we created
+    df
+}
 ```
-I did the test above. By the test, we can find that the avg_rating_count_ver values are in reasonable range. Therefore this proves that the new feature function works as intended.
+
 
 ## 4.4 Feature engineering: evaluate the rank of price
 Because the value of price do not show the the level of price. Thus I do define three kinds of price degree to solve this problem and  it also can be better to observe whether the relation exist between user rating and price.Moreover, if we need to build a non-linear models such as neural network or support vector machine, then categorization may be very beneficial.When the price is the range between 0 and 5, I define it as "low" level price. If the value of price is higher than 5 but its value is smaller than or equal to 10, then I defined it as "normal" level price. In the end, for the value of price that is higher 10, I defined it as "high" level price.
 
+input: df(data frame), price(var), price_degree(col_name)
+
+output: create a new column on original dataset and the new column name is called price_degree
+
 ```{r price_degree function}
-price_degree<-function(df){
-    df %>% 
+price_degree<-function(df,var,col_name){
+ df<-df %>% 
     mutate(price_degree = case_when(
-      price <= 5 ~ "Low",
-      price <= 10 ~"Normal",
+      {{var}} <= 5 ~ "Low",
+      {{var}} <= 10 ~"Normal",
       TRUE ~ "High"
-    ))
+    )) %>% 
+   select(price_degree,everything()) 
+   names(df)[1]<-paste0(col_name) #we can use this line code to change the name of the new column we created
+   df
 }
 
 ```
 
-```{r test price_degree function}
-df %>% 
-  price_degree() %>% 
-  assert(in_set(c("Low", "Normal", "High")), price_degree)
-```
-I did the test above. By the test, we can find that price_degree values only have three possiblities including Low, Normal and High. Thus the result is what I wanted.
+# I did the test for the new feature function on the 40-modeling.rmd.

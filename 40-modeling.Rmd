@@ -9,9 +9,11 @@ Prepare the data for modeling
 ## adding the new four feature into the dataset
 In order to further model preparation, I added the four new feature into the data. I think the new features can have some relationship to help me evaluate the user ratings.Then I selected the column which might be useful for our future model preparation. 
 ```{r prepare the data}
-user_rating_model <- df %>%    
-  avg_rating_count_ver() %>%
-  price_degree() %>% 
+user_rating_model <- df %>%
+  #size_MB(size_bytes,'size_MB') %>% 
+  #cont_rating_degree(cont_rating,'cont_rating_degree') %>% 
+  avg_rating_count_ver(rating_count_ver,sup_devices_num,'avg_rating_count_ver') %>%
+  price_degree(price,'price_degree') %>% 
   select(user_rating_ver,size_bytes,price,price_degree,avg_rating_count_ver,rating_count_ver,sup_devices_num,cont_rating,
          ipad_sc_urls_num,lang_num,vpp_lic)
 
@@ -19,18 +21,46 @@ user_rating_model
 dim(user_rating_model)
 names(user_rating_model)
 head(user_rating_model)
+
+write.csv(user_rating_model,"user_rating_model.csv")
 ```
+
+
+
+
+# Test the added feature tests for final user_rating_model
+
+
 Now I use 'assert' to check the new feature varaibles I added to ensure that the new feature variables are what I wanted.
-```{r test the added feature tests for final user_rating_model}
 
-user_rating_model %>% 
-  assert(in_set(c("Low", "Normal", "High")), price_degree)
+# Hint:Because each value of size_MB should be always more than 0. Thus when we want to test size_MB function, we only need to test whether all values of size_MB column are always more than 0.
 
+```{r test size_MB function}
+
+```
+
+
+# Hint:Because the cont_rating_degree will only contain three values including "low","middle","high". Thus we need to test whether the cont_rating_degree column contain the three values.
+```{r test cont_rating_degree function}
+
+```
+
+
+```{r test avg_rating_count_ver function}
 user_rating_model %>% 
   assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),avg_rating_count_ver)
 
 ```
+
+
+```{r test price_degree function}
+user_rating_model %>% 
+  assert(in_set(c("Low", "Normal", "High")), price_degree)
+```
+
+
 I did the test above. By doing the test for user rating model, we can again prove that the featute engineering functions have been added to our dataset. 
+
 
 
 Now we can do the further model exploration.
