@@ -73,9 +73,9 @@ df %>%
 df %>% 
   verify(rating_count_ver>=0)
 df %>% 
-  verify(user_rating>=0 & user_rating<=5)
+  assert(within_bounds(0,5),user_rating)
 df %>% 
-  verify(user_rating_ver>=0 & user_rating_ver<=5)
+  assert(within_bounds(0,5),user_rating_ver)
 df %>% 
   verify(sup_devices_num>=0)
 df %>% 
