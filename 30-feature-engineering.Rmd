@@ -5,6 +5,7 @@ output: html_notebook
 
 # 4. Adding four functions which add engineered features to the dataset
 
+
 ## 4.1 Feature engineering: Size in MB
 It is uncommon that we decribe the size of application by using bytes as a unit. Because the application size will have many digits when we use bytes as a unit, which might cause some problems for our further process. Another shortcoming is that we cannot have a more clear view on the relation between bytes size of the application and user rating.Thus, I think MB a better predictor than bytes.This is because, to some extent, the conversion can avoid the problems I just mentioned.
 
@@ -23,6 +24,7 @@ Because each value of size_MB should be always more than 0. Thus when we want to
 
 
 ## 4.2 Feature engineering: evaluate the rank of Content Rating
+
 Clearly, there is a non-monotonous relation between content rating and user rating. When we need to consider to build a non-linear model (e.g. neural network, support vector machine), then we need to do categorization for content rating. At the same time, when you do categorization for content rating, it does show a more clear relationship between content rating and user rating. 
 
 Therefore you can create a new feature function called cont_rating_degree to show what we want. When the content rating is the range between 0 and 6, then we can define it as "low" level content rating. The value is higher than six but its value is smaller than or equal to 12, then we define it as "middle" level content rating. Finally, for the value that is higher than 12, I defined it as "high" level content rating.
