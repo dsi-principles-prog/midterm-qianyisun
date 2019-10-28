@@ -1,0 +1,79 @@
+---
+title: "30-feature-engineering"
+output: html_notebook
+---
+
+# 4. Adding four functions which add engineered features to the dataset
+
+## 4.1 Feature engineering: Size in MB
+It is uncommon that we decribe the size of application by using bytes as a unit. Because the application size will have many digits when we use bytes as a unit, which might cause some problems for our further process. Another shortcoming is that we cannot have a more clear view on the relation between bytes size of the application and user rating.Thus, I think MB a better predictor than bytes.This is because, to some extent, the conversion can avoid the problems I just mentioned.
+
+So I want to add the new feature function called size_MB. The new feature function is transformed from the size_bytes column. We all know the 1MB=1024KB and 1KB = 1024 Byte. Thus 1M is equal to '1024*1024 bytes'. Now please help me create this function to produce a new column into our dataset.
+
+```{r size_MB}
+
+
+```
+
+Because each value of size_MB should be always more than 0. Thus when we want to test size_MB function, Thus we need to test whether all values of size_MB column are always more than 0.
+```{r test size_MB function}
+
+```
+
+
+
+## 4.2 Feature engineering: evaluate the rank of Content Rating
+Clearly, there is a non-monotonous relation between content rating and user rating. When we need to consider to build a non-linear model (e.g. neural network, support vector machine), then we need to do categorization for content rating. At the same time, when you do categorization for content rating, it does show a more clear relationship between content rating and user rating. 
+
+Therefore you can create a new feature function called cont_rating_degree to show what we want. When the content rating is the range between 0 and 6, then we can define it as "low" level content rating. The value is higher than six but its value is smaller than or equal to 12, then we define it as "middle" level content rating. Finally, for the value that is higher than 12, I defined it as "high" level content rating.
+
+```{r cont_rating_degree function}
+
+```
+
+Because the cont_rating_degree will only contain three values including "low","middle","high". Thus we need to test whether the cont_rating_degree column contain the three values.
+```{r cont_rating_degree function}
+
+```
+
+
+## 4.3 Feature engineering: average User Rating counts of supporting devices
+In order to explore the relationship between user ratings and average User Rating counts of supporting devices, now I create a feature function called avg_rating_count_ver.This new column of value is equel to the value that rating_count_ver divides sup_devices_num(Number of supporting devices).
+```{r avg_rating_count_ver function}
+avg_rating_count_ver<-function(df){
+
+df %>% 
+    mutate(avg_rating_count_ver = rating_count_ver/sup_devices_num)
+}
+
+```
+
+```{r test avg_rating_count_ver function}
+df %>% 
+  avg_rating_count_ver() %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),avg_rating_count_ver)
+
+```
+I did the test above. By the test, we can find that the avg_rating_count_ver values are in reasonable range. Therefore this proves that the new feature function works as intended.
+
+## 4.4 Feature engineering: evaluate the rank of price
+Because the value of price do not show the the level of price. Thus I do define three kinds of price degree to solve this problem and  it also can be better to observe whether the relation exist between user rating and price.Moreover, if we need to build a non-linear models such as neural network or support vector machine, then categorization may be very beneficial.When the price is the range between 0 and 5, I define it as "low" level price. If the value of price is higher than 5 but its value is smaller than or equal to 10, then I defined it as "normal" level price. In the end, for the value of price that is higher 10, I defined it as "high" level price.
+
+```{r price_degree function}
+price_degree<-function(df){
+    df %>% 
+    mutate(price_degree = case_when(
+      price <= 5 ~ "Low",
+      price <= 10 ~"Normal",
+      TRUE ~ "High"
+    ))
+}
+
+```
+
+```{r test price_degree function}
+df %>% 
+  price_degree() %>% 
+  assert(in_set(c("Low", "Normal", "High")), price_degree)
+```
+I did the test above. By the test, we can find that price_degree values only have three possiblities including Low, Normal and High. Thus the result is what I wanted.

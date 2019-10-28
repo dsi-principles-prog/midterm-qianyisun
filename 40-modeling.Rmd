@@ -1,0 +1,64 @@
+---
+title: "40-modeling"
+output: html_notebook
+---
+
+
+Prepare the data for modeling
+
+## adding the new four feature into the dataset
+In order to further model preparation, I added the four new feature into the data. I think the new features can have some relationship to help me evaluate the user ratings.Then I selected the column which might be useful for our future model preparation. 
+```{r prepare the data}
+user_rating_model <- df %>%    
+  avg_rating_count_ver() %>%
+  price_degree() %>% 
+  select(user_rating_ver,size_bytes,price,price_degree,avg_rating_count_ver,rating_count_ver,sup_devices_num,cont_rating,
+         ipad_sc_urls_num,lang_num,vpp_lic)
+
+user_rating_model
+dim(user_rating_model)
+names(user_rating_model)
+head(user_rating_model)
+```
+
+
+```{r test the added feature tests for final user_rating_model}
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),user_rating_ver)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),size_bytes)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),price)
+
+user_rating_model %>% 
+  assert(in_set(c("Low", "Normal", "High")), price_degree)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),avg_rating_count_ver)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),rating_count_ver)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),sup_devices_num)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),cont_rating)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),ipad_sc_urls_num)
+
+user_rating_model %>% 
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),lang_num)
+
+user_rating_model %>% 
+  assert(in_set(c(TRUE, FALSE)), vpp_lic)
+```
+I did the test above. By doing the test for user rating model, we can again prove that the featute engineering functions have been added to our dataset. 
+
+
+Now we can do the further model exploration.
+
+

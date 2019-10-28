@@ -1,0 +1,111 @@
+---
+title: "10-import"
+output: html_notebook
+---
+
+
+# Library package
+```{r library_packages}
+library(tidyverse)
+library(assertr)
+library(janitor)
+library(readr)
+library(lubridate)
+```
+
+# 1. Describe the data and the problem
+The "AppleStore" dataset contains more than 7000 Apple iOS mobile application information.Dimensions of the data set are 7197 rows and 16 columns. Its details of variables in the dataset are showed below:
+
+"id" : App ID
+"track_name": App Name
+"size_bytes": Size (in Bytes)
+"currency": Currency Type
+"price": Price amount
+"rating_count_tot": User Rating counts (for all version)
+"rating_count_ver": User Rating counts (for current version)
+"user_rating" : Average User Rating value (for all version)
+"user_rating_ver": Average User Rating value (for current version)
+"ver" : Latest version code
+"cont_rating": Content Rating
+"prime_genre": Primary Genre
+"sup_devices_num": Number of supporting devices
+"ipadSc_urls_num": Number of screenshots showed for display
+"lang.num": Number of supported languages
+"vpp_lic": Vpp Device Based Licensing Enabled
+
+My main goal is to solve the problem that how the attributes of App contribute the user ratings. Finally we can give some advice to application inventor to help them obtain higher user satisfaction.
+
+# 2. Read in and check data
+(1) Import data and clean its column names
+```{r import data}
+df<-AppleStore <- read_csv("AppleStore.csv") %>% 
+  clean_names()
+```
+(2) Checking the structures of the dataset
+```{r view the structures of the data}
+dim(df)
+str(df)
+summary(df)
+head(df)
+```
+
+(3) Check whether NA value exists
+```{r Check all columns have NA or not}
+df %>% 
+  assert(not_na, x1:vpp_lic)
+```
+
+(4) I did the test to detect which the value is na. I found there is no NA value in the dataset.
+```{r check uniqueness of id}
+df %>% 
+assert(is_uniq, id)
+```
+I did the test. I found that no same id exist in the dataset.Thus I do not need to do further process for the dataset.
+
+(5) I want to check the numerical variables in the dataset whether they are in the reasonable ranges.
+```{r check the range of numerical variable}
+df %>% 
+  verify(size_bytes>0)
+df %>% 
+  verify(price>=0)
+df %>% 
+  verify(rating_count_tot>=0)
+df %>% 
+  verify(rating_count_ver>=0)
+df %>% 
+  verify(user_rating>=0 & user_rating<=5)
+df %>% 
+  verify(user_rating_ver>=0 & user_rating_ver<=5)
+df %>% 
+  verify(sup_devices_num>=0)
+df %>% 
+  verify(ipad_sc_urls_num>=0)
+df %>% 
+  verify(lang_num>=0)
+df %>% 
+  verify(vpp_lic==1 |vpp_lic==0)
+
+```
+Through a series of check, I find that these numberical variables are all in the reasonable range. Thus I do not need to do any other process.
+
+# 3. Clean up the data
+After finishing last procedure, I found that the dataset is very clean. Thus I do some changes on type conversion and do other operations.
+
+Convert vpp_lic column to logical from numerical. This is because its value is either 0 or 1. Thus I think that I can convert it into logical type for being better observed.
+```{r type conversion for vpp_lic column }
+df <- df %>% 
+  mutate(vpp_lic = ifelse(vpp_lic == 1, TRUE, FALSE))
+```
+
+In order to be convenient to following calculation, I decided to remove the "+" character as a way to clean the data of  cont_rating column.
+
+```{r remove "+" character}
+df$cont_rating = as.numeric(gsub("\\+", "", df$cont_rating))
+df
+```
+The gsub() function looks for any instance of “\+” and replaces it with “”. Thus as it shows, now I succeeded in removing the "+" character in the cont_rating column.
+
+Then we can do the next step to writing four functions and add them into the dataset.
+
+
+
