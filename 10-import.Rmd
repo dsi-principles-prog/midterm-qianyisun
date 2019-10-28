@@ -100,7 +100,8 @@ df <- df %>%
 In order to be convenient to following calculation, I decided to remove the "+" character as a way to clean the data of  cont_rating column.
 
 ```{r remove "+" character}
-df$cont_rating = as.numeric(gsub("\\+", "", df$cont_rating))
+df <- df %>% 
+  mutate(cont_rating=as.numeric(gsub("\\+", "", cont_rating)))
 df
 ```
 The gsub() function looks for any instance of “\+” and replaces it with “”. Thus as it shows, now I succeeded in removing the "+" character in the cont_rating column.

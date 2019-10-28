@@ -20,17 +20,8 @@ dim(user_rating_model)
 names(user_rating_model)
 head(user_rating_model)
 ```
-
-
+Now I use 'assert' to check the new feature varaibles I added to ensure that the new feature variables are what I wanted.
 ```{r test the added feature tests for final user_rating_model}
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),user_rating_ver)
-
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),size_bytes)
-
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),price)
 
 user_rating_model %>% 
   assert(in_set(c("Low", "Normal", "High")), price_degree)
@@ -38,23 +29,6 @@ user_rating_model %>%
 user_rating_model %>% 
   assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),avg_rating_count_ver)
 
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),rating_count_ver)
-
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),sup_devices_num)
-
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),cont_rating)
-
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),ipad_sc_urls_num)
-
-user_rating_model %>% 
-  assert(within_bounds(lower.bound = 0, upper.bound = Inf, allow.na = FALSE),lang_num)
-
-user_rating_model %>% 
-  assert(in_set(c(TRUE, FALSE)), vpp_lic)
 ```
 I did the test above. By doing the test for user rating model, we can again prove that the featute engineering functions have been added to our dataset. 
 

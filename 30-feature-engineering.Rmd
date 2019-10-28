@@ -22,7 +22,6 @@ Because each value of size_MB should be always more than 0. Thus when we want to
 ```
 
 
-
 ## 4.2 Feature engineering: evaluate the rank of Content Rating
 
 Clearly, there is a non-monotonous relation between content rating and user rating. When we need to consider to build a non-linear model (e.g. neural network, support vector machine), then we need to do categorization for content rating. At the same time, when you do categorization for content rating, it does show a more clear relationship between content rating and user rating. 
