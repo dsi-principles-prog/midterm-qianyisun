@@ -8,6 +8,8 @@ Prepare the data for modeling
 
 ## adding the new four feature into the dataset
 In order to further model preparation, I added the four new feature into the data. I think the new features can have some relationship to help me evaluate the user ratings.Then I selected the column which might be useful for our future model preparation. 
+
+# Hint: if you remove the "#" below, you can add the two functions you created into the user_rating_model dataset
 ```{r prepare the data}
 user_rating_model <- df %>%
   #size_MB(size_bytes,'size_MB') %>% 
@@ -40,7 +42,7 @@ Now I use 'assert' to check the new feature varaibles I added to ensure that the
 ```
 
 
-# Hint:Because the cont_rating_degree will only contain three values including "low","middle","high". Thus we need to test whether the cont_rating_degree column contain the three values.
+# Hint:Because the cont_rating_degree will only contain three values including "Low","Middle","High". Thus we need to test whether the cont_rating_degree column contain the three values.
 ```{r test cont_rating_degree function}
 
 ```

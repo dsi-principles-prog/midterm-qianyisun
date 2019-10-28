@@ -27,12 +27,11 @@ size_MB<-function(df,var,col_name){
 
 
 
-
 ## 4.2 Feature engineering: evaluate the rank of Content Rating
 
-Clearly, there is a non-monotonous relation between content rating and user rating. When we need to consider to build a non-linear model (e.g. neural network, support vector machine), then we need to do categorization for content rating. At the same time, when you do categorization for content rating, it does show a more clear relationship between content rating and user rating. 
+When we need to consider to build a non-linear model (e.g. neural network, support vector machine), then we need to do categorization for content rating. At the same time, when you do categorization for content rating, it does show a more clear relationship between content rating and user rating. 
 
-Therefore you can create a new feature function called cont_rating_degree to show what we want. When the content rating is the range between 0 and 6, then we can define it as "low" level content rating. The value is higher than six but its value is smaller than or equal to 12, then we define it as "middle" level content rating. Finally, for the value that is higher than 12, I defined it as "high" level content rating.
+Therefore you can create a new feature function called cont_rating_degree to show what we want. When the value of content rating is the range between 0 and 6, then we can define it as "Low" level content rating. When the value of content rating is higher than six but its value is smaller than or equal to 12, then we define it as "Middle" level content rating. Finally, for the value that is higher than 12, I defined it as "High" level content rating.
 
 input: df(data frame), cont_rating(var), cont_rating_degree(col_name)
 
