@@ -29,10 +29,11 @@ Therefore you can create a new feature function called cont_rating_degree to sho
 
 ```{r cont_rating_degree function}
 
+
 ```
 
 Because the cont_rating_degree will only contain three values including "low","middle","high". Thus we need to test whether the cont_rating_degree column contain the three values.
-```{r cont_rating_degree function}
+```{r test cont_rating_degree function}
 
 ```
 
