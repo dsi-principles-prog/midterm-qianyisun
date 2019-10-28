@@ -8,14 +8,14 @@ output: html_notebook
 ## 4.1 Feature engineering: Size in MB
 It is uncommon that we decribe the size of application by using bytes as a unit. Because the application size will have many digits when we use bytes as a unit, which might cause some problems for our further process. Another shortcoming is that we cannot have a more clear view on the relation between bytes size of the application and user rating.Thus, I think MB a better predictor than bytes.This is because, to some extent, the conversion can avoid the problems I just mentioned.
 
-So I want to add the new feature function called size_MB. The new feature function is transformed from the size_bytes column. We all know the 1MB=1024KB and 1KB = 1024 Byte. Thus 1M is equal to '1024*1024 bytes'. Now please help me create this function to produce a new column into our dataset.
+So I want to add the new feature function called size_MB. The new feature function is transformed from the size_bytes column. We all know the 1MB=1024KB and 1KB = 1024 Byte. Thus 1MB is equal to '1024*1024 bytes'. Now please help me create this function.
 
 ```{r size_MB}
 
 
 ```
 
-Because each value of size_MB should be always more than 0. Thus when we want to test size_MB function, Thus we need to test whether all values of size_MB column are always more than 0.
+Because each value of size_MB should be always more than 0. Thus when we want to test size_MB function, we need to test whether all values of size_MB column are always more than 0.
 ```{r test size_MB function}
 
 ```
