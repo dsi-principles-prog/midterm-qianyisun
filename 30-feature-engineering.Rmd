@@ -17,12 +17,13 @@ output: create a new column on original dataset and the new column name is calle
 
 # Hint: we can refer to the two functions I left which might help you better create the function.
 ```{r size_MB}
-size_MB<-function(df,var,col_name){
-
-  
-
+size_MB<- function(df,var,col_name){
+df <- df %>%
+  mutate(size_MB = {{var}}/(1024^2)) %>%
+  select(size_MB,everything())
+  names(df)[1]<-paste0(col_name)
+  df
 }
-
 ```
 
 
@@ -40,9 +41,15 @@ output: create a new column on original dataset and the new column name is calle
 # Hint: we can refer to the two functions I left which might help you better create the function.
 ```{r cont_rating_degree function}
 cont_rating_degree<-function(df,var,col_name){
-
-  
-
+ df<-df %>% 
+    mutate(cont_rating_degree = case_when(
+      {{var}} <= 6 ~ "Low",
+      {{var}} <= 12 ~"Middle",
+      TRUE ~ "High"
+    )) %>% 
+   select(cont_rating_degree,everything()) 
+   names(df)[1]<-paste0(col_name) 
+   df
 }
 
 ```

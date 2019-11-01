@@ -12,12 +12,12 @@ In order to further model preparation, I added the four new feature into the dat
 # Hint: if you remove the "#" below, you can add the two functions you created into the user_rating_model dataset
 ```{r prepare the data}
 user_rating_model <- df %>%
-  #size_MB(size_bytes,'size_MB') %>% 
-  #cont_rating_degree(cont_rating,'cont_rating_degree') %>% 
+  size_MB(size_bytes,'size_MB') %>% 
+  cont_rating_degree(cont_rating,'cont_rating_degree') %>% 
   avg_rating_count_ver(rating_count_ver,sup_devices_num,'avg_rating_count_ver') %>%
   price_degree(price,'price_degree') %>% 
   select(user_rating_ver,size_bytes,price,price_degree,avg_rating_count_ver,rating_count_ver,sup_devices_num,cont_rating,
-         ipad_sc_urls_num,lang_num,vpp_lic)
+         ipad_sc_urls_num,lang_num,vpp_lic,cont_rating_degree)
 
 user_rating_model
 dim(user_rating_model)
@@ -38,13 +38,15 @@ Now I use 'assert' to check the new feature varaibles I added to ensure that the
 # Hint:Because each value of size_MB should be always more than 0. Thus when we want to test size_MB function, we only need to test whether all values of size_MB column are always more than 0.
 
 ```{r test size_MB function}
-
+user_rating_model %>%
+  assert(within_bounds(lower.bound = 0, upper.bound = Inf, size_MB))
 ```
 
 
 # Hint:Because the cont_rating_degree will only contain three values including "Low","Middle","High". Thus we need to test whether the cont_rating_degree column contains only the three values.
 ```{r test cont_rating_degree function}
-
+user_rating_model %>% 
+  assert(in_set(c("Low", "Middle", "High")), cont_rating_degree)
 ```
 
 
